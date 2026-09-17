@@ -1,11 +1,6 @@
 import React from 'react'
 import { motion } from "framer-motion";
-import {
-  Search,
-  MapPin,
-  ArrowRight,
-  Sparkles,
-} from "lucide-react";
+import { Sparkles,} from "lucide-react";
 function Hero() {
   return (
     <section className="relative overflow-hidden bg-slate-50 pt-32 pb-20 sm:pt-36 sm:pb-24">
@@ -83,61 +78,85 @@ function Hero() {
             could be just one search away.
           </motion.p>
 
-          {/* Search Box */}
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="mx-auto mt-10 max-w-3xl"
-          >
-            <div className="rounded-2xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-200/60 sm:rounded-full">
+         {/* Explore Categories */}
+<motion.div
+  initial={{ opacity: 0, y: 25 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: 0.3 }}
+  className="mx-auto mt-10 max-w-3xl"
+>
+  <p className="mb-4 text-sm font-medium text-slate-500">
+    Explore opportunities by category
+  </p>
 
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+    <button
+      type="button"
+      onClick={() =>
+        document.getElementById("jobs")?.scrollIntoView({
+          behavior: "smooth",
+        })
+      }
+      className="group rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-lg"
+    >
+      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+        💻
+      </div>
 
-                {/* Search Input */}
-                <div className="flex flex-1 items-center gap-3 px-4 py-3">
-                  <Search
-                    size={20}
-                    className="shrink-0 text-slate-400"
-                  />
+      <h3 className="font-semibold text-slate-900">
+        Development
+      </h3>
 
-                  <input
-                    type="text"
-                    placeholder="Job title or company"
-                    className="w-full bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400 sm:text-base"
-                  />
-                </div>
+      <p className="mt-1 text-sm text-slate-400">
+        Software & Web Development
+      </p>
+    </button>
 
-                {/* Location */}
-                <div className="hidden h-8 w-px bg-slate-200 sm:block" />
+    <button
+      type="button"
+      onClick={() =>
+        document.getElementById("jobs")?.scrollIntoView({
+          behavior: "smooth",
+        })
+      }
+      className="group rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-lg"
+    >
+      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+        🎨
+      </div>
 
-                <div className="hidden items-center gap-3 px-4 sm:flex">
-                  <MapPin
-                    size={19}
-                    className="text-slate-400"
-                  />
+      <h3 className="font-semibold text-slate-900">
+        Design
+      </h3>
 
-                  <span className="whitespace-nowrap text-sm text-slate-400">
-                    Location
-                  </span>
-                </div>
+      <p className="mt-1 text-sm text-slate-400">
+        UI/UX & Creative Design
+      </p>
+    </button>
 
-                {/* Search Button */}
-                <button
-                  type="button"
-                  className="group flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:bg-violet-600 sm:rounded-full"
-                >
-                  Search Jobs
+    <button
+      type="button"
+      onClick={() =>
+        document.getElementById("jobs")?.scrollIntoView({
+          behavior: "smooth",
+        })
+      }
+      className="group rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-lg"
+    >
+      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+        📣
+      </div>
 
-                  <ArrowRight
-                    size={17}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </button>
+      <h3 className="font-semibold text-slate-900">
+        Marketing
+      </h3>
 
-              </div>
-            </div>
-          </motion.div>
+      <p className="mt-1 text-sm text-slate-400">
+        Digital Marketing & Content
+      </p>
+    </button>
+  </div>
+</motion.div>
 
           {/* Popular Searches */}
           <motion.div

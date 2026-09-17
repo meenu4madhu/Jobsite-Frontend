@@ -4,7 +4,7 @@ import { Menu, X, BriefcaseBusiness } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import PostJobModal from "./PostJobModal";
 
-const Navbar = () => {
+const Navbar = ({ onJobPosted }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPostJobOpen, setIsPostJobOpen] = useState(false);
 
@@ -125,9 +125,10 @@ const Navbar = () => {
 
       {/* Post Job Modal */}
       <PostJobModal
-        isOpen={isPostJobOpen}
-        onClose={() => setIsPostJobOpen(false)}
-      />
+  isOpen={isPostJobOpen}
+  onClose={() => setIsPostJobOpen(false)}
+  onJobPosted={onJobPosted}
+/>
     </header>
   );
 };

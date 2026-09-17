@@ -10,8 +10,9 @@ import {
   Sparkles,
   Send,
 } from "lucide-react";
+import api from "../api/axios";
 
-const PostJobModal = ({ isOpen, onClose }) => {
+const PostJobModal = ({ isOpen, onClose, onJobPosted }) => {
   const [formData, setFormData] = useState({
     title: "",
     company: "",
@@ -33,19 +34,21 @@ const PostJobModal = ({ isOpen, onClose }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
+  try {
     setIsSubmitting(true);
 
-    // Temporary simulation.
-    // Later this will be replaced with the backend API call.
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await api.post("/jobs", formData);
 
-    setIsSubmitting(false);
-    setIsSuccess(true);
+onJobPosted();
+
+setIsSubmitting(false);
+setIsSuccess(true);
 
     setTimeout(() => {
       setIsSuccess(false);
+
       setFormData({
         title: "",
         company: "",
@@ -53,9 +56,16 @@ const PostJobModal = ({ isOpen, onClose }) => {
         location: "",
         description: "",
       });
+
       onClose();
     }, 1500);
-  };
+  } catch (error) {
+    console.error("Failed to post job:", error);
+
+    setIsSubmitting(false);
+    alert("Failed to post job. Please try again.");
+  }
+};
 
   return (
     <AnimatePresence>

@@ -1,70 +1,39 @@
-import { useMemo, useState } from "react";
+
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SearchX } from "lucide-react";
 
 import JobCard from "./JobCard";
 import CategoryFilter from "./CategoryFilter";
+import api from "../api/axios";
 
-const jobs = [
-  {
-    id: 1,
-    title: "Frontend Developer",
-    company: "TechNova Solutions",
-    category: "Development",
-    location: "Kochi, Kerala",
-    description:
-      "Build modern and responsive web applications using React and JavaScript.",
-  },
-  {
-    id: 2,
-    title: "MERN Stack Developer",
-    company: "CodeCraft Technologies",
-    category: "Development",
-    location: "Bangalore, India",
-    description:
-      "Work on scalable full-stack applications using MongoDB, Express, React and Node.js.",
-  },
-  {
-    id: 3,
-    title: "UI/UX Designer",
-    company: "Creative Studio",
-    category: "Design",
-    location: "Remote",
-    description:
-      "Create beautiful and user-friendly digital experiences for modern products.",
-  },
-  {
-    id: 4,
-    title: "Product Designer",
-    company: "PixelWorks",
-    category: "Design",
-    location: "Kochi, Kerala",
-    description:
-      "Design intuitive interfaces and collaborate with developers and product teams.",
-  },
-  {
-    id: 5,
-    title: "Digital Marketing Executive",
-    company: "GrowthLabs",
-    category: "Marketing",
-    location: "Trivandrum, Kerala",
-    description:
-      "Plan and execute digital marketing campaigns across multiple channels.",
-  },
-  {
-    id: 6,
-    title: "Content Marketing Specialist",
-    company: "BrandSphere",
-    category: "Marketing",
-    location: "Remote",
-    description:
-      "Create engaging content strategies that help brands grow their online presence.",
-  },
-];
-
-const JobList = () => {
+const JobList = ({ refreshJobs }) => {
+  const [jobs, setJobs] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Fetch jobs from backend
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await api.get("/jobs");
+
+        setJobs(response.data);
+      } catch (error) {
+        console.error("Failed to fetch jobs:", error);
+        setError("Failed to load jobs. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, [refreshJobs]);
 
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) => {
@@ -80,7 +49,7 @@ const JobList = () => {
 
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, searchTerm]);
+  }, [jobs, activeCategory, searchTerm]);
 
   return (
     <section
@@ -152,18 +121,37 @@ const JobList = () => {
         <div className="mt-12">
           <AnimatePresence mode="popLayout">
 
-            {filteredJobs.length > 0 ? (
+            {/* Loading */}
+            {loading ? (
+              <div className="py-16 text-center">
+                <p className="text-sm text-slate-500">
+                  Loading jobs...
+                </p>
+              </div>
+
+            /* Error */
+            ) : error ? (
+              <div className="py-16 text-center">
+                <p className="text-sm text-red-500">
+                  {error}
+                </p>
+              </div>
+
+            /* Jobs */
+            ) : filteredJobs.length > 0 ? (
               <motion.div
                 layout
                 className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"
               >
                 {filteredJobs.map((job) => (
                   <JobCard
-                    key={job.id}
+                    key={job._id}
                     job={job}
                   />
                 ))}
               </motion.div>
+
+            /* No Jobs */
             ) : (
               <motion.div
                 initial={{ opacity: 0 }}
